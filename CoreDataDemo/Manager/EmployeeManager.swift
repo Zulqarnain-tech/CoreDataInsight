@@ -33,4 +33,16 @@ struct EmployeeManager
     func fetchEmployeeById(byIdentifer id: UUID)->Employee?{
         return _employeeDataRepository.get(byIdentifier: id)
     }
+    func getAll() -> [Employee]? {
+
+            let result = PersistanceStorage.shared.fetchManagedObject(managedObject: CDEmployee.self)
+
+            var employees : [Employee] = []
+
+            result?.forEach({ (cdEmployee) in
+                employees.append(cdEmployee.convertToEmployee())
+            })
+
+            return employees
+        }
 }
