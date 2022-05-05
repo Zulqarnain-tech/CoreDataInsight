@@ -8,7 +8,8 @@
 import Foundation
 extension CDEmployee {
     func convertToEmployee() -> Employee{
-        return Employee(email: self.email, name: self.name, profilePic: self.profilePic, id: self.id!)
+        return Employee(email: self.email!, id: self.id!, name: self.name!, profilePic: self.profilePic, account: self.toAccount?.convertToAccount())
     }
 }
+
 

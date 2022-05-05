@@ -9,23 +9,22 @@ import Foundation
 
 import CoreData
 
-protocol EmployeeRepository {
-
-    func create(employee: Employee)
-    func getAll() -> [Employee]?
-    func get(byIdentifier id: UUID) -> Employee?
-    func update(employee: Employee)->Bool
-    func delete(id: UUID)->Bool
-}
-
-struct EmployeeDataRepository : EmployeeRepository
+struct EmployeeDataRepository : BaseRepository
 {
-    func create(employee: Employee) {
+    func create(record: Employee) {
         let cdEmployee = CDEmployee(context: PersistanceStorage.shared.context)
-        cdEmployee.id = employee.id
-        cdEmployee.name = employee.name
-        cdEmployee.email = employee.email
+        cdEmployee.id = record.id
+        cdEmployee.name = record.name
+        cdEmployee.email = record.email
         cdEmployee.profilePic = cdEmployee.profilePic
+        if(record.account != nil)
+                {
+                    let cdPassport = CDAccount(context: PersistanceStorage.shared.context)
+                    cdPassport.id = record.account?.id
+            cdPassport.salary = record.account!.salary
+
+            cdEmployee.toAccount = cdPassport
+                }
         PersistanceStorage.shared.saveContext()
     }
     
@@ -47,25 +46,26 @@ struct EmployeeDataRepository : EmployeeRepository
         
     }
     
-    func update(employee: Employee)->Bool {
-        let result = getCDEmployee(byIdentifier: employee.id)
+    func update(record: Employee)->Bool {
+        let result = getCDEmployee(byIdentifier: record.id)
         guard result != nil else {
             return false
         }
-        result?.email = employee.email
-        result?.name = employee.name
-        result?.profilePic = employee.profilePic
+        result?.email = record.email
+        result?.name = record.name
+        result?.profilePic = record.profilePic
         PersistanceStorage.shared.saveContext()
         return true
     }
     
-    func delete(id: UUID)->Bool {
-        let result = getCDEmployee(byIdentifier: id)
+    func delete(byIdentifier: UUID)->Bool {
+        let result = getCDEmployee(byIdentifier: byIdentifier)
         guard result != nil else {
             return false
         }
         if let cdEmployee = result{
             PersistanceStorage.shared.context.delete(cdEmployee)
+            PersistanceStorage.shared.saveContext()
             return true
         }else{
             return false

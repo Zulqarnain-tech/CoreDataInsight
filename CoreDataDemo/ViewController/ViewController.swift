@@ -8,9 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    let empOne = Employee(email: "abc@gmail.com", name: "Zafar", profilePic: nil, id: UUID())
-    let empTwo = Employee(email: "xyz@gmail.com", name: "Safar", profilePic: nil, id: UUID())
-    let empThree = Employee(email: "Bnm@gmail.com", name: "Hashar", profilePic: nil, id: UUID())
+    let employeeM = EmployeeManager()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -18,15 +16,30 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let employeeM = EmployeeManager()
-//        employeeM.createEmployee(employee: empOne)
-//        employeeM.createEmployee(employee: empTwo)
-//        employeeM.createEmployee(employee: empThree)
+//        employeesCreation()
+        //employeeM.deleteAll()
+//        employeeM.deleteEmployee(id: UUID(uuidString: "")!)
+        getAllEmployees()
+    }
+    
+    func employeesCreation(){
+        let accOne = Account(id: UUID(), salary: Int16(750))
+        let accTwo = Account(id: UUID(), salary: 150)
+        let accThree = Account(id: UUID(), salary: 255)
+        
+        
+        let empOne = Employee(email: "abc@gmail.com", id: UUID(), name: "Zafar", profilePic: (UIImage(named: "empOne")?.pngData()!)!, account: accOne)
+        let empTwo = Employee(email: "xyz@gmail.com", id: UUID(),name: "Safar", profilePic: nil,  account: accTwo)
+        let empThree = Employee(email: "Bnm@gmail.com", id: UUID(), name: "Hashar", profilePic: nil,  account: accThree)
+        employeeM.createEmployee(employee: empOne)
+        employeeM.createEmployee(employee: empTwo)
+        employeeM.createEmployee(employee: empThree)
+    }
+    func getAllEmployees(){
         let allEmployees = employeeM.getAll()
         allEmployees?.forEach({ employee in
-            print("Name : \(String(describing: employee.name)) Email : \(employee.email) UUID : \(employee.id)")
+            print("Name : \(employee.name) Email : \(employee.email) UUID : \(employee.id)")
         })
     }
-
 }
 
