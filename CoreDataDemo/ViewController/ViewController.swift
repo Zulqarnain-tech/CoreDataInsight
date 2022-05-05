@@ -16,12 +16,20 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        employeesCreation()
+        //employeesCreation()
         //employeeM.deleteAll()
 //        employeeM.deleteEmployee(id: UUID(uuidString: "")!)
+        //employeeM.updateEmployee(employee: <#T##Employee#>)
         getAllEmployees()
+       
+        
     }
     
+    func updateEmployee(){
+//        let acc = Account(id: UUID(uuidString: "E7FBAF6F-B6C1-4773-B78B-DE969D912410")!, salary: Int16(750))
+        let emp = Employee(email: "CA@apple.com", id: UUID(uuidString: "E7FBAF6F-B6C1-4773-B78B-DE969D912410")!, name: "Zulqarnain Naveed", profilePic: (UIImage(named: "empOne")?.pngData()!)!, account: nil)
+        employeeM.updateEmployee(employee: emp)
+    }
     func employeesCreation(){
         let accOne = Account(id: UUID(), salary: Int16(750))
         let accTwo = Account(id: UUID(), salary: 150)
